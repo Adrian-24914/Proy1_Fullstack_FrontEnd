@@ -1,7 +1,82 @@
+
+/* =============================================
+   RESET CSS
+   ============================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+/* =============================================
+   FIX PARA CLIP-PATH ELEMENTS
+   ============================================= */
+.search-input,
+.form-input,
+.form-textarea,
+.form-select,
+.btn-primary,
+.series-card,
+.modal-content {
+  position: relative; /* ← Esto es crítico */
+
+/* =============================================
+   FIX PARA CLIP-PATH ELEMENTS
+   ============================================= */
+.search-input,
+.form-input,
+.form-textarea,
+.form-select,
+.btn-primary,
+.series-card,
+.modal-content {
+  position: relative;
+  z-index: 1;
+}
+
 /* =============================================
    CYBERPUNK 2077 AUTHENTIC THEME
    ============================================= */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=VT323&display=swap');
+
+
 
 /* =============================================
    CSS VARIABLES
