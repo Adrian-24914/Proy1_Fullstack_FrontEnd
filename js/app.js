@@ -74,13 +74,14 @@ const App = {
     });
 
     // Upload de imagen
-    document.getElementById('uploadImageBtn').addEventListener('click', () => {
-      document.getElementById('imageFile').click();
-    });
-
-    document.getElementById('imageFile').addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+    document.getElementById('uploadImageBtn').addEventListener('click', async () => {
+      const fileInput = document.getElementById('imageFile');
+      const file = fileInput.files[0];
+      
+      if (!file) {
+        alert('Selecciona una imagen primero');
+        return;
+      }
 
       // Validar tamaño (1MB)
       if (file.size > 1048576) {
@@ -96,23 +97,31 @@ const App = {
 
       try {
         const uploadBtn = document.getElementById('uploadImageBtn');
+        const statusDiv = document.getElementById('uploadStatus');
+        
         uploadBtn.textContent = '⏳ Subiendo...';
         uploadBtn.disabled = true;
+        statusDiv.textContent = 'Subiendo imagen...';
 
         const response = await API.uploadImage(file);
         document.getElementById('image_url').value = response.url;
 
         uploadBtn.textContent = '✅ Subido';
+        statusDiv.textContent = '✓ Imagen subida correctamente';
+        uploadBtn.disabled = false;
+
         setTimeout(() => {
           uploadBtn.textContent = '📤 Subir';
-          uploadBtn.disabled = false;
-        }, 2000);
+          statusDiv.textContent = '';
+        }, 3000);
 
       } catch (error) {
         console.error('Error al subir:', error);
-        alert('Error al subir imagen: ' + error.message);
         
         const uploadBtn = document.getElementById('uploadImageBtn');
+        const statusDiv = document.getElementById('uploadStatus');
+        
+        statusDiv.textContent = '✗ Error al subir: ' + error.message;
         uploadBtn.textContent = '📤 Subir';
         uploadBtn.disabled = false;
       }
