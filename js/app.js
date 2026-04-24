@@ -147,14 +147,41 @@ const App = {
    */
   async handleFormSubmit() {
     const seriesId = document.getElementById('seriesId').value;
-    
+    const imageUrlField = document.getElementById('image_url');
+    const fileInput = document.getElementById('imageFile');
+    const file = fileInput.files[0];
+
+    try {
+      if (file && !imageUrlField.value) {
+        if (file.size > 1048576) {
+          alert('La imagen no puede superar 1MB');
+          return;
+        }
+        if (!file.type.startsWith('image/')) {
+          alert('Solo se permiten imágenes');
+          return;
+        }
+        const response = await API.uploadImage(file);
+        imageUrlField.value = response.url;
+      }
+    } catch (error) {
+      console.error('Error al subir imagen:', error);
+      alert('Error al subir la imagen: ' + error.message);
+      return;
+    }
+
+    if (!seriesId && !imageUrlField.value) {
+      alert('Selecciona una imagen para la serie');
+      return;
+    }
+
     const data = {
       title: document.getElementById('title').value,
       description: document.getElementById('description').value,
       genre: document.getElementById('genre').value,
       year: parseInt(document.getElementById('year').value),
       rating: parseFloat(document.getElementById('rating').value),
-      image_url: document.getElementById('image_url').value,
+      image_url: imageUrlField.value,
       watched: document.getElementById('watched').checked
     };
 
