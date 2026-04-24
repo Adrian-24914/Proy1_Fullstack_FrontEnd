@@ -109,5 +109,30 @@ const API = {
       console.error('Error en deleteSeries:', error);
       throw error;
     }
+  },
+
+  /**
+   * Subir imagen
+   */
+  async uploadImage(file) {
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const response = await fetch(`${CONFIG.API_URL}/upload`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Error al subir imagen');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error en uploadImage:', error);
+      throw error;
+    }
   }
 };

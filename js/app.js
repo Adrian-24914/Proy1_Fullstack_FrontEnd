@@ -60,6 +60,63 @@ const App = {
       this.filters.genre = e.target.value;
       this.loadSeries();
     });
+
+    // Exportar CSV
+    document.getElementById('exportCsvBtn').addEventListener('click', async () => {
+      try {
+        const series = await API.getAllSeries(this.filters);
+        const timestamp = new Date().toISOString().split('T')[0];
+        UI.exportToCSV(series, `series-tracker-${timestamp}.csv`);
+      } catch (error) {
+        console.error('Error al exportar:', error);
+        alert('Error al exportar CSV');
+      }
+    });
+
+    // Upload de imagen
+    document.getElementById('uploadImageBtn').addEventListener('click', () => {
+      document.getElementById('imageFile').click();
+    });
+
+    document.getElementById('imageFile').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Validar tamaño (1MB)
+      if (file.size > 1048576) {
+        alert('La imagen no puede superar 1MB');
+        return;
+      }
+
+      // Validar tipo
+      if (!file.type.startsWith('image/')) {
+        alert('Solo se permiten imágenes');
+        return;
+      }
+
+      try {
+        const uploadBtn = document.getElementById('uploadImageBtn');
+        uploadBtn.textContent = '⏳ Subiendo...';
+        uploadBtn.disabled = true;
+
+        const response = await API.uploadImage(file);
+        document.getElementById('image_url').value = response.url;
+
+        uploadBtn.textContent = '✅ Subido';
+        setTimeout(() => {
+          uploadBtn.textContent = '📤 Subir';
+          uploadBtn.disabled = false;
+        }, 2000);
+
+      } catch (error) {
+        console.error('Error al subir:', error);
+        alert('Error al subir imagen: ' + error.message);
+        
+        const uploadBtn = document.getElementById('uploadImageBtn');
+        uploadBtn.textContent = '📤 Subir';
+        uploadBtn.disabled = false;
+      }
+    });
   },
 
   /**

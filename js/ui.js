@@ -145,5 +145,68 @@ const UI = {
     document.getElementById('rating').value = series.rating;
     document.getElementById('image_url').value = series.image_url;
     document.getElementById('watched').checked = series.watched;
+  },
+
+  /**
+   * Exportar series a CSV
+   */
+  exportToCSV(series, filename = 'series.csv') {
+    if (!series || series.length === 0) {
+      alert('No hay series para exportar');
+      return;
+    }
+
+    // Headers del CSV
+    const headers = ['ID', 'Título', 'Descripción', 'Género', 'Año', 'Rating', 'URL Imagen', 'Vista'];
+    
+    // Convertir series a filas
+    const rows = series.map(s => [
+      s.id,
+      this.escapeCSV(s.title),
+      this.escapeCSV(s.description),
+      this.escapeCSV(s.genre),
+      s.year,
+      s.rating,
+      this.escapeCSV(s.image_url),
+      s.watched ? 'Sí' : 'No'
+    ]);
+
+    // Combinar headers y rows
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.join(','))
+    ].join('\n');
+
+    // Crear blob y descargar
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  },
+
+  /**
+   * Escapar valores para CSV
+   */
+  escapeCSV(value) {
+    if (value === null || value === undefined) {
+      return '';
+    }
+    
+    // Convertir a string
+    value = String(value);
+    
+    // Si contiene comas, comillas o saltos de línea, envolver en comillas
+    if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+      value = '"' + value.replace(/"/g, '""') + '"';
+    }
+    
+    return value;
   }
 };
