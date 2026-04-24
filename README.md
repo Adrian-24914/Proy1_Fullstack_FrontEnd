@@ -60,10 +60,18 @@ Funcionalidades
 
 Challenges Implementados
 
-- Exportar CSV (20 pts) - Generado manualmente desde JavaScript sin librerias
-- Upload de imagenes (30 pts) - Input de archivo con validacion de tamano
+API y Backend:
+- Codigos HTTP correctos (20 pts) - 201 al crear, 204 al eliminar, 404 si no existe, 400 en validaciones
+- Validacion server-side con JSON descriptivo (20 pts) - Respuestas de error estructuradas
+- Paginacion (30 pts) - ?page= y ?limit= con metadata
+- Busqueda por nombre (15 pts) - ?search= en titulo y descripcion
 
-Total: 50 puntos
+Challenges:
+- Upload de imagenes (30 pts) - Endpoint /upload con limite de 1MB
+- Exportar CSV (20 pts) - Generado desde JavaScript en frontend
+
+Total: 135 puntos
+
 
 No Implementados:
 - Exportar Excel .xlsx (30 pts)
