@@ -8,3 +8,6 @@ Thumbs.db
 
 # Environment
 .env
+
+# Vercel
+.vercel
